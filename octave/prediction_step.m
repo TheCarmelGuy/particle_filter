@@ -20,17 +20,16 @@ for i = 1:numParticles
   particles(i).history{end+1} = particles(i).pose;
 
   % TODO: sample a new pose for the particle
-  sample_r1 = u.r1 - normrnd(0, r1Noise^2 + r2Noise^2);
-  sample_trans = u.t - normrnd(0, transNoise^2 + r1Noise^2 + r2Noise^2); 
-  sample_r2 = u.r2 - normrnd(0, r2Noise^2 + transNoise^2);
+  sample_r1 = u.r1 - normrnd(0, r1Noise + r2Noise);
+  sample_trans = u.t - normrnd(0, transNoise + r1Noise + r2Noise); 
+  sample_r2 = u.r2 - normrnd(0, r2Noise + transNoise);
 
   x = particles(i).pose(1) + sample_trans*cos(particles(i).pose(3) + sample_r1);
   y = particles(i).pose(2) + sample_trans*sin(particles(i).pose(3) + sample_r1);
   theta = particles(i).pose(3) +  sample_r1 + sample_r2;
   
-  particles(i).pose = [x y theta]; 
+  particles(i).pose = [x ;y; theta]; 
 
 
 end
 
-end
